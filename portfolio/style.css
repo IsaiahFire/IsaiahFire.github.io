@@ -67,7 +67,7 @@ a {
 /* Hero Section Styling */
 .hero {
     position: relative; /* Allows the overlay to position correctly */
-    background-image: url('assets/images/heroBG.jpg');
+    background-image: url('.portfolio/assets/images/heroBG.jpg');
     background-size: cover;
     background-position: center;
     height: 100vh;
