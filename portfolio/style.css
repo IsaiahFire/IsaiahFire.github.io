@@ -241,12 +241,14 @@ a {
     justify-content: center;
     align-items: center;
     width: 100%;
+    position: relative;
+    overflow: hidden;
     margin-bottom: 20px; /* Add spacing between video and controls */
 }
 
 /* Maintain 16:9 Aspect Ratio */
 .video-slide {
-    position: relative;
+    position: absolute;
     width: 100%;
     padding-bottom: 56.25%; /* 16:9 aspect ratio (9 / 16 = 0.5625) */
     height: 0; /* This ensures the iframe height is controlled by the padding */
@@ -262,6 +264,7 @@ a {
 
 .active-slide {
     display: block;
+    position: relative;
 }
 
 /* Carousel Controls */
