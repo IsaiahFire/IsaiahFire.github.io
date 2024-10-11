@@ -247,6 +247,7 @@ a {
 
 /* Maintain 16:9 Aspect Ratio */
 .video-slide {
+    display: none;
     width: 100%;
     padding-bottom: 56.25%; /* 16:9 aspect ratio (9 / 16 = 0.5625) */
     height: 0; /* This ensures the iframe height is controlled by the padding */
