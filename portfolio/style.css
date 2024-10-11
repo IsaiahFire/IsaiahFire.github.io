@@ -270,18 +270,18 @@ a {
     justify-content: center;
     align-items: center;
     width: 100%;
-    position: relative;
 }
 
 /* Arrows */
+/* Arrow Styling */
 .arrow {
     font-size: 36px;
-    padding: 10px;
     cursor: pointer;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    border-radius: 50%;
-    margin: 0 20px;
+    color: black; /* Change the arrow color to black */
+    background: none; /* Remove the grey background */
+    border: none; /* Remove any borders */
+    padding: 0; /* Remove any padding */
+    margin: 0 20px; /* Add some margin between the arrows and thumbnails */
     user-select: none;
 }
 
