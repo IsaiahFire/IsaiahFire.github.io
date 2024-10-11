@@ -244,15 +244,20 @@ a {
     margin-bottom: 20px; /* Add spacing between video and controls */
 }
 
+/* Maintain 16:9 Aspect Ratio */
 .video-slide {
-    display: none; /* Hide all videos initially */
+    position: relative;
     width: 100%;
-    text-align: center;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio (9 / 16 = 0.5625) */
+    height: 0; /* This ensures the iframe height is controlled by the padding */
 }
 
 .video-slide iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 400px; /* Adjust height based on your needs */
+    height: 100%; /* The iframe will fill the 16:9 container */
 }
 
 .active-slide {
