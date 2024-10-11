@@ -226,28 +226,27 @@ a {
 .footer p {
     margin: 0;
 }
+/* Main Carousel Styles */
 .video-carousel {
     position: relative;
     width: 80%;
     margin: auto;
     display: flex;
-    justify-content: center;
+    flex-direction: column; /* Stack the main video and carousel controls vertically */
     align-items: center;
 }
 
 .carousel-content {
     display: flex;
-    overflow: hidden;
-    width: 100%;
     justify-content: center;
     align-items: center;
+    width: 100%;
+    margin-bottom: 20px; /* Add spacing between video and controls */
 }
 
 .video-slide {
     display: none; /* Hide all videos initially */
     width: 100%;
-    justify-content: center;
-    align-items: center;
     text-align: center;
 }
 
@@ -260,17 +259,24 @@ a {
     display: block;
 }
 
+/* Carousel Controls */
+.carousel-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
+
+/* Arrows */
 .arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
     font-size: 36px;
     padding: 10px;
     cursor: pointer;
-    z-index: 1;
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
     border-radius: 50%;
+    margin: 0 20px;
     user-select: none;
 }
 
@@ -282,10 +288,11 @@ a {
     right: 0;
 }
 
+/* Thumbnail Indicators */
 .thumbnail-indicators {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    margin: 10px;
 }
 
 .thumbnail {
