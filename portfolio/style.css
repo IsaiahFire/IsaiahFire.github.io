@@ -108,8 +108,9 @@ a {
 .cta-button {
     background-color: #f39c12;
     color: #fff;
-    padding: 100px 20px;
+    padding: 10px 20px;
     border-radius: 5px;
+    margin-top: 10px;
     transition: background-color 0.3s ease;
 }
 
