@@ -104,23 +104,26 @@ a {
     margin: 20px 0;
     font-size: 1.2rem;
 }
-
-    background-color: #f39c12;
-    color: #fff;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+.cta-button {
+    background-color: #f39c12; /* Orange background */
+    color: white; /* White text */
+    border: none; /* Removes any unwanted borders */
+    border-radius: 5px; /* Slight rounding of corners */
     padding: 12px 24px; /* Adds space inside the button */
-    font-size: 16px; /* Adjusts text size for readability */
-    text-align: center; /* Centers the text */
-    border: none; /* Removes any default button borders */
+    font-size: 16px; /* Adjusts text size */
+    font-family: Arial, sans-serif; /* Sets a basic font */
     cursor: pointer; /* Makes the cursor a pointer on hover */
-    display: inline-block; /* Ensures it behaves like a button */
+    text-decoration: none; /* Removes underline from text */
+    display: inline-block; /* Makes it behave like a button */
     margin: 10px 0; /* Adds space above and below the button */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
 }
 
 .cta-button:hover {
-    background-color: #e67e22;
+    background-color: #e67e22; /* Darker orange on hover */
 }
+
+
 /* About Section */
 .about {
     background-color: #fff;
