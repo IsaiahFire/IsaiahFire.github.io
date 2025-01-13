@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Isaiah Firestone Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation Section -->
+    <nav class="navbar">
+        <div class="logo">Isaiah Firestone</div>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="hero">
+        <div class="hero-text">
+            <h1>Hi, I'm Isaiah Firestone!</h1>
+            <p>I'm a creative filmmaker & photographer, a strong leader, and a proud weirdo.</p>
+            <a href="#projects" class="cta-button">Check out things I've done</a>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="about" class="section about">
+        <h2>About Me</h2>
+        <p>Hey. Thanks for stopping by! I'm Isaiah Firestone, a 15-year-old student at the Buffalo Academy for Visual and Performing Arts. I love to make creative films & do some photography on the side, and am a lover of math, silly socks, and above all, cats. I'm a strong leader, a creative thinker, and a curious person who's always ready to take on something new. </p>
+    </section>
+
+<section id="projects" class="section projects">
+        <h2>Things I've Done:</h2>
+        <div class="project-grid">
+            <div class="project">
+                <h3>Putnam News</h3>
+                <p>Made-up news, delivered inconsistently.</p>
+                <a href="https://www.youtube.com/@putnamnews" class="cta-button">Watch some silly news</a>
+            </div>
+            <div class="project">
+                <h3>Wheel Of Kindness</h3>
+                <p>Making donating to organizations fun!</p>
+                <a href="https://sites.google.com/view/wheel-of-kindness" class="cta-button">Check it out</a>
+            </div>
+            <!-- Add more projects as needed -->
+        </div>
+    </section>
+    
+    <!-- Projects Section -->
+    <section id="projects" class="section projects">
+    <h2>School Film Projects:</h2>
+<div class="video-carousel">
+    <!-- Main Video Content (displayed as a slideshow) -->
+    <div class="carousel-content">
+        <!-- Each video in the carousel -->
+        <div class="video-slide">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/4917osOV83E" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="video-slide">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/1pNEI1414v4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="video-slide">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/HQgrH46ulxs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <!-- Carousel and Arrows Below the Main Video -->
+    <div class="carousel-controls">
+        <!-- Left Arrow -->
+        <span class="arrow left" onclick="prevSlide()">&#10094;</span>
+
+        <!-- Thumbnail Indicators (Greyed-out thumbnails) -->
+        <div class="thumbnail-indicators">
+            <img class="thumbnail" src="https://img.youtube.com/vi/4917osOV83E/0.jpg" onclick="currentSlide(1)">
+            <img class="thumbnail" src="https://img.youtube.com/vi/1pNEI1414v4/0.jpg" onclick="currentSlide(2)">
+            <img class="thumbnail" src="https://img.youtube.com/vi/HQgrH46ulxs/0.jpg" onclick="currentSlide(3)">
+        </div>
+
+        <!-- Right Arrow -->
+        <span class="arrow right" onclick="nextSlide()">&#10095;</span>
+    </div>
+</div>    
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="section skills">
+        <h2>Skills</h2>
+        <div class="skill-icons">
+            <div class="skill">Filmmaking</div>
+            <div class="skill">Video Editing</div>
+            <div class="skill">Mathematics</div>
+            <div class="skill">Problem Solving</div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+
+    <section id="contact" class="contact-section">
+        <h2>Contact Me</h2>
+        <p>Have a question or just want to say hi? Send me a message below!</p>
+        <form id="contact-form" action="https://script.google.com/macros/s/AKfycbwA4z_3FCYbojeIxJHdXR-HDqpRh1I-L4tFh1cT1MXzSW3PyWx2aVah_KvJhPOoYCtaSw/exec" method="POST">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Your Name" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Your Email" required>
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Your Message" rows="5" required></textarea>
+          </div>
+          <button type="submit" class="cta-button">Send Message</button>
+        </form>
+      </section>
+
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <p>© 2024 Isaiah Firestone | ChatGPT wrote a lot of this code, I'm not a web developer</p>
+    </footer>
+
+    <script src="formSubmit.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
