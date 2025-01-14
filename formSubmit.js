@@ -9,7 +9,7 @@ form.addEventListener('submit', (e) => {
     message: document.getElementById('message').value,
   };
 
-  fetch('https://script.google.com/macros/s/AKfycbwqH_y8xVvHH1xI8TOqr_ZUr_5EqfafCI0eZtcgLh9GCSrk8nk4hMY_aURqr__oJMKVow/exec', {
+  fetch('https://script.google.com/macros/s/AKfycbwWjJlT2_6JyW1k0BoQVBvHkUav-bWIRPrWjKs2X6bwM4aI4BfBVpkh93-FhUC7BRSSQg/exec', {
     method: 'POST',
     mode: 'no-cors', // Bypass CORS issues
     headers: { 'Content-Type': 'application/json' },
