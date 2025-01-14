@@ -4,12 +4,11 @@ const form = document.getElementById('contact-form'); // Ensure your form has th
     const buttonText = button.querySelector(".button-text");
     const loadingIcon = button.querySelector(".loading-icon");
 
+form.addEventListener('submit', (e) => {
+  e.preventDefault(); // Prevent the default form submission behavior
     // Show the loading icon and hide the button text
     buttonText.style.display = "none";
     loadingIcon.style.display = "inline-block";
-
-form.addEventListener('submit', (e) => {
-  e.preventDefault(); // Prevent the default form submission behavior
 
   const formData = {
     name: document.getElementById('name').value,
