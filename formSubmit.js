@@ -1,4 +1,14 @@
 const form = document.getElementById('contact-form'); // Ensure your form has this ID
+document.getElementById("contact-form").addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    const button = document.getElementById("submitButton");
+    const buttonText = button.querySelector(".button-text");
+    const loadingIcon = button.querySelector(".loading-icon");
+
+    // Show the loading icon and hide the button text
+    buttonText.style.display = "none";
+    loadingIcon.style.display = "inline-block";
 
 form.addEventListener('submit', (e) => {
   e.preventDefault(); // Prevent the default form submission behavior
