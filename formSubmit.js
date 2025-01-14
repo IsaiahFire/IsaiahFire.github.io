@@ -19,16 +19,18 @@ form.addEventListener('submit', (e) => {
     message: document.getElementById('message').value,
   };
 
-  fetch('https://script.google.com/macros/s/AKfycbwWjJlT2_6JyW1k0BoQVBvHkUav-bWIRPrWjKs2X6bwM4aI4BfBVpkh93-FhUC7BRSSQg/exec', {
+  fetch('https://script.google.com/macros/s/AKfycbz1-PoP4bvKDS9l2hUdOAZiGqWA5GnB10JL97pRIBtBpOERZwcZmuieRDEaoSDSbWC_aA/exec', {
     method: 'POST',
     mode: 'no-cors', // Bypass CORS issues
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(formData),
   })
     .then((response) => {
-      console.log('Form submitted successfully:', response);
-      alert('Message sent! Thank you for contacting me.');
-      form.reset(); // Clear the form after submission
+        loadingIcon.style.display = "none";
+        buttonText.style.display = "inline-block";
+        console.log('Form submitted successfully:', response);
+        alert('Message sent! Thank you for contacting me.');
+        form.reset(); // Clear the form after submission
     })
     .catch((error) => {
       console.error('Error submitting the form:', error);
