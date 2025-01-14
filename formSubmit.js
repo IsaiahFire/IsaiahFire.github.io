@@ -16,7 +16,7 @@ form.addEventListener('submit', (e) => {
     message: document.getElementById('message').value,
   };
 
-  fetch('https://script.google.com/macros/s/AKfycbz1-PoP4bvKDS9l2hUdOAZiGqWA5GnB10JL97pRIBtBpOERZwcZmuieRDEaoSDSbWC_aA/exec', {
+  fetch('https://script.google.com/macros/s/AKfycbyb69C4afPa7584C6Clko3sMllqNIVJ6TPavNmLRqoapwO_T_pDhgipaiWCKFzLS3qzBw/exec', {
     method: 'POST',
     mode: 'no-cors', // Bypass CORS issues
     headers: { 'Content-Type': 'application/json' },
