@@ -1,5 +1,4 @@
-const form = document.getElementById('contact-form'); // Ensure your form has this ID
-document.getElementById("contact-form").addEventListener("submit", function (event) {
+const form = document.getElementById("contact-form").addEventListener("submit", function (event));
     event.preventDefault(); // Prevent the default form submission
 
     const button = document.getElementById("submitButton");
