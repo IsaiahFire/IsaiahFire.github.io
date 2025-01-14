@@ -118,7 +118,12 @@
           </div>
             <button id="submitButton" type="submit">
                 <span class="button-text">Submit</span>
-                <span class="loading-icon" style="display: none;">&#x1F504;</span>
+                <svg id="spinner" class="loading-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 50 50" style="display: none;">
+                    <circle cx="25" cy="25" r="20" fill="none" stroke-width="5" stroke="#fff" stroke-dasharray="90 150" stroke-linecap="round">
+                        <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 25 25;360 25 25" />
+                    </circle>
+                </svg>
+                <!-- <span class="loading-icon" style="display: none;">&#x1F504;</span> -->
             </button>
         </form>
       </section>
