@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Isaiah Firestone Portfolio</title>
     <link rel="stylesheet" href="style.css">
+    <div
+        class="cf-turnstile"
+        data-sitekey="0x4AAAAAAA-kG3VzBkM_Ptwm"
+        data-callback="javascriptCallback"
+    ></div>
 </head>
 <body>
     <!-- Navigation Section -->
@@ -116,6 +122,7 @@
             <label for="message">Message</label>
             <textarea id="message" name="message" placeholder="Your Message" rows="5" required></textarea>
           </div>
+            <div class="cf-turnstile" data-sitekey="<0x4AAAAAAA-kG3VzBkM_Ptwm>"></div>
             <button id="submitButton" type="submit">
                 <span class="button-text">Submit</span>
                 <svg id="spinner" class="loading-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 50 50" style="display: none;">
