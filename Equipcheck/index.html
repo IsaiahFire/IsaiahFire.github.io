@@ -38,34 +38,34 @@
 
         // Form structure for the user to enter their reservation details
         document.body.innerHTML += `
-          <h2>Equipment Checkout</h2>
+          <h2>&nbsp&nbsp&nbsp&nbsp&nbspEquipment Checkout</h2>
           <form id="checkout-form">
             <label for="name">Your Name:</label>
-            <input type="text" id="name" required><br><br>
-            
+            <input type="text" id="name" required><br>
+
             <label for="equipment-type">Equipment Type:</label>
             <select id="equipment-type" required>
               <option value="">Select Equipment Type</option>
               <!-- Options will be populated from Firestore -->
-            </select><br><br>
+            </select><br>
             
             <label for="specific-equipment">Specific Equipment:</label>
             <select id="specific-equipment" required>
               <option value="">Select Specific Equipment</option>
               <!-- Specific equipment will be dynamically populated here -->
-            </select><br><br>
+            </select><br>
             
             <label for="checkout-date">Checkout Date:</label>
-            <input type="date" id="checkout-date" required><br><br>
+            <input type="date" id="checkout-date" required><br>
             
             <label for="checkout-time">Checkout Time:</label>
-            <input type="time" id="checkout-time" required><br><br>
-            
+            <input type="time" id="checkout-time" required><br>
+        
             <label for="return-date">Return Date:</label>
-            <input type="date" id="return-date" required><br><br>
+            <input type="date" id="return-date" required><br>
             
             <label for="return-time">Return Time:</label>
-            <input type="time" id="return-time" required><br><br>
+            <input type="time" id="return-time" required><br>
             
             <button type="submit">Reserve Equipment</button>
           </form>
