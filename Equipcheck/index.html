@@ -1,196 +1,229 @@
-<script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
-    import { getFirestore , collection, getDocs, addDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
-  
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyAyqdhzkEhW2HKJ6vJIZUoFUMDpyVt2Q5I",
-      authDomain: "equipment-checkout-79dc3.firebaseapp.com",
-      projectId: "equipment-checkout-79dc3",
-      storageBucket: "equipment-checkout-79dc3.firebasestorage.app",
-      messagingSenderId: "12217227136",
-      appId: "1:12217227136:web:e00683477560c061765365"
-    };
-  
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    console.log("Firebase initialized!");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipment Checkout</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
+        import { getFirestore , collection, getDocs, addDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
+      
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyAyqdhzkEhW2HKJ6vJIZUoFUMDpyVt2Q5I",
+          authDomain: "equipment-checkout-79dc3.firebaseapp.com",
+          projectId: "equipment-checkout-79dc3",
+          storageBucket: "equipment-checkout-79dc3.firebasestorage.app",
+          messagingSenderId: "12217227136",
+          appId: "1:12217227136:web:e00683477560c061765365"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        console.log("Firebase initialized!");
 
-    async function fetchReservations() {
-        const querySnapshot = await getDocs(collection(db, "reservations"));
-        querySnapshot.forEach(doc => {
-            console.log(doc.id, " => ", doc.data());
-        });
-    }
+        async function fetchReservations() {
+            const querySnapshot = await getDocs(collection(db, "reservations"));
+            querySnapshot.forEach(doc => {
+                console.log(doc.id, " => ", doc.data());
+            });
+        }
 
-    fetchReservations();
+        fetchReservations();
 
-    // Form structure for the user to enter their reservation details
-    document.body.innerHTML += `
-      <h2>Equipment Checkout</h2>
-      <form id="checkout-form">
-        <label for="name">Your Name:</label>
-        <input type="text" id="name" required><br><br>
-        
-        <label for="equipment-type">Equipment Type:</label>
-        <select id="equipment-type" required>
-          <option value="">Select Equipment Type</option>
-          <!-- Options will be populated from Firestore -->
-        </select><br><br>
-        
-        <label for="specific-equipment">Specific Equipment:</label>
-        <select id="specific-equipment" required>
-          <option value="">Select Specific Equipment</option>
-          <!-- Specific equipment will be dynamically populated here -->
-        </select><br><br>
-        
-        <label for="checkout-date">Checkout Date:</label>
-        <input type="date" id="checkout-date" required><br><br>
-        
-        <label for="checkout-time">Checkout Time:</label>
-        <input type="time" id="checkout-time" required><br><br>
-        
-        <label for="return-date">Return Date:</label>
-        <input type="date" id="return-date" required><br><br>
-        
-        <label for="return-time">Return Time:</label>
-        <input type="time" id="return-time" required><br><br>
-        
-        <button type="submit">Reserve Equipment</button>
-      </form>
-      <div id="confirmation"></div>
-      <div id="error-message" style="color: red;"></div>
-    `;
+        // Form structure for the user to enter their reservation details
+        document.body.innerHTML += `
+          <h2>Equipment Checkout</h2>
+          <form id="checkout-form">
+            <label for="name">Your Name:</label>
+            <input type="text" id="name" required><br><br>
+            
+            <label for="equipment-type">Equipment Type:</label>
+            <select id="equipment-type" required>
+              <option value="">Select Equipment Type</option>
+              <!-- Options will be populated from Firestore -->
+            </select><br><br>
+            
+            <label for="specific-equipment">Specific Equipment:</label>
+            <select id="specific-equipment" required>
+              <option value="">Select Specific Equipment</option>
+              <!-- Specific equipment will be dynamically populated here -->
+            </select><br><br>
+            
+            <label for="checkout-date">Checkout Date:</label>
+            <input type="date" id="checkout-date" required><br><br>
+            
+            <label for="checkout-time">Checkout Time:</label>
+            <input type="time" id="checkout-time" required><br><br>
+            
+            <label for="return-date">Return Date:</label>
+            <input type="date" id="return-date" required><br><br>
+            
+            <label for="return-time">Return Time:</label>
+            <input type="time" id="return-time" required><br><br>
+            
+            <button type="submit">Reserve Equipment</button>
+          </form>
+          <div id="confirmation"></div>
+          <div id="error-message" style="color: red;"></div>
+        `;
 
-    const form = document.getElementById("checkout-form");
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      document.getElementById("error-message").innerText = ""; // Clear previous error message
+        const form = document.getElementById("checkout-form");
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          document.getElementById("error-message").innerText = ""; // Clear previous error message
 
-      const name = document.getElementById("name").value;
-      const equipmentType = document.getElementById("equipment-type").value;
-      const specificEquipment = document.getElementById("specific-equipment").value;
-      const checkoutDate = document.getElementById("checkout-date").value;
-      const checkoutTime = document.getElementById("checkout-time").value;
-      const returnDate = document.getElementById("return-date").value;
-      const returnTime = document.getElementById("return-time").value;
+          const name = document.getElementById("name").value;
+          const equipmentType = document.getElementById("equipment-type").value;
+          const specificEquipment = document.getElementById("specific-equipment").value;
+          const checkoutDate = document.getElementById("checkout-date").value;
+          const checkoutTime = document.getElementById("checkout-time").value;
+          const returnDate = document.getElementById("return-date").value;
+          const returnTime = document.getElementById("return-time").value;
 
-      const checkoutDateTime = new Date(`${checkoutDate}T${checkoutTime}`);
-      const returnDateTime = new Date(`${returnDate}T${returnTime}`);
+          const checkoutDateTime = new Date(`${checkoutDate}T${checkoutTime}`);
+          const returnDateTime = new Date(`${returnDate}T${returnTime}`);
 
-      if (returnDateTime <= checkoutDateTime) {
-          document.getElementById("error-message").innerText = "Return time must be after checkout time.";
-          return;
-      }
-
-      // Check for existing reservations
-      const reservationQuery = collection(db, "reservations");
-      const reservationSnapshot = await getDocs(reservationQuery);
-      let isDoubleBooked = false;
-      let conflictingReservation = null;
-
-      reservationSnapshot.forEach(doc => {
-          const data = doc.data();
-          if (data.specificEquipment === specificEquipment &&
-              new Date(`${data.checkoutDate}T${data.checkoutTime}`) < returnDateTime &&
-              new Date(`${data.returnDate}T${data.returnTime}`) > checkoutDateTime) {
-              isDoubleBooked = true;
-              conflictingReservation = data;
+          if (returnDateTime <= checkoutDateTime) {
+              document.getElementById("error-message").innerText = "Return time must be after checkout time.";
+              return;
           }
-      });
 
-      if (isDoubleBooked) {
-          // Fetch alternatives from Firestore
-          const specificRef = doc(db, `equip/${equipmentType}/items/${specificEquipment}`);
-          const specificDocSnap = await getDoc(specificRef);
+          // Check for existing reservations
+          const reservationQuery = collection(db, "reservations");
+          const reservationSnapshot = await getDocs(reservationQuery);
+          let isDoubleBooked = false;
+          let conflictingReservation = null;
 
-          if (specificDocSnap.exists()) {
-              const data = specificDocSnap.data();
-              if (data.alternatives && data.alternatives.length > 0) {
-                  for (let alt of data.alternatives) {
-                      const altRef = doc(db, `equip/${equipmentType}/items/${alt}`);
-                      const altSnap = await getDoc(altRef);
-                      if (altSnap.exists() && altSnap.data().available === true) {
-                          const altData = altSnap.data();
-                          document.getElementById("error-message").innerText = `This equipment is booked from ${new Date(`${conflictingReservation.checkoutDate}T${conflictingReservation.checkoutTime}`).toLocaleString([], { month: '2-digit', day: '2-digit', hour: 'numeric', minute: 'numeric', hour12: true })} to ${new Date(`${conflictingReservation.returnDate}T${conflictingReservation.returnTime}`).toLocaleString([], { month: '2-digit', day: '2-digit', hour: 'numeric', minute: 'numeric', hour12: true })}.\n\n${altData.specificEquipment} is free during your selected time.`;
-                          return;
-                      }
-                  }
+          reservationSnapshot.forEach(doc => {
+              const data = doc.data();
+              if (data.specificEquipment === specificEquipment &&
+                  new Date(`${data.checkoutDate}T${data.checkoutTime}`) < returnDateTime &&
+                  new Date(`${data.returnDate}T${data.returnTime}`) > checkoutDateTime) {
+                  isDoubleBooked = true;
+                  conflictingReservation = data;
               }
-              // Suggest the next available time
-              document.getElementById("error-message").innerText = `This equipment is booked from ${new Date(`${conflictingReservation.checkoutDate}T${conflictingReservation.checkoutTime}`).toLocaleString([], { month: '2-digit', day: '2-digit', hour: 'numeric', minute: 'numeric', hour12: true })} to ${new Date(`${conflictingReservation.returnDate}T${conflictingReservation.returnTime}`).toLocaleString([], { month: '2-digit', day: '2-digit', hour: 'numeric', minute: 'numeric', hour12: true })}.\n\nPlease select a later time.`;
+          });
+
+          if (isDoubleBooked) {
+              // Fetch alternatives from Firestore
+              const specificRef = doc(db, `equip/${equipmentType}/items/${specificEquipment}`);
+              const specificDocSnap = await getDoc(specificRef);
+
+              if (specificDocSnap.exists()) {
+                  const data = specificDocSnap.data();
+                  if (data.alternatives && data.alternatives.length > 0) {
+                  let availableAlternative = null;
+
+                      for (let alt of data.alternatives) {
+                          const altRef = doc(db, `equip/${equipmentType}/items/${alt}`);
+                          const altSnap = await getDoc(altRef);
+                      
+                      if (altSnap.exists()) {
+                              const altData = altSnap.data();
+                          const altReservations = await getDocs(collection(db, "reservations"));
+
+                          let isAltAvailable = true;
+
+                          altReservations.forEach(res => {
+                              const resData = res.data();
+                              if (resData.specificEquipment === alt &&
+                                  new Date(`${resData.checkoutDate}T${resData.checkoutTime}`) < returnDateTime &&
+                                  new Date(`${resData.returnDate}T${resData.returnTime}`) > checkoutDateTime) {
+                                  isAltAvailable = false;
+                              }
+                          });
+
+                          if (isAltAvailable) {
+                              availableAlternative = altData.specificEquipment;
+                              break;
+                          }
+                          }
+                      }
+
+                  if (availableAlternative) {
+                      document.getElementById("error-message").innerText = `This equipment is booked from ${new Date(`${conflictingReservation.checkoutDate}T${conflictingReservation.checkoutTime}`).toLocaleString([], { month: '2-digit', day: '2-digit', hour: 'numeric', minute: 'numeric', hour12: true })} to ${new Date(`${conflictingReservation.returnDate}T${conflictingReservation.returnTime}`).toLocaleString([], { month: '2-digit', day: '2-digit', hour: 'numeric', minute: 'numeric', hour12: true })}.\n\n${availableAlternative} is free during your selected time.`;
+                  } else {
+                      document.getElementById("error-message").innerText = `This equipment is booked from ${new Date(`${conflictingReservation.checkoutDate}T${conflictingReservation.checkoutTime}`).toLocaleString([], { month: '2-digit', day: '2-digit', hour: 'numeric', minute: 'numeric', hour12: true })} to ${new Date(`${conflictingReservation.returnDate}T${conflictingReservation.returnTime}`).toLocaleString([], { month: '2-digit', day: '2-digit', hour: 'numeric', minute: 'numeric', hour12: true })}.\n\nNo alternative equipment is available during your selected time.`;
+                  }
+                  }
+              return;
+              }
           }
-          return;
-      }
 
-      // Create a new reservation object
-      const newReservation = {
-        name,
-        equipmentType,
-        specificEquipment,
-        checkoutDate,
-        checkoutTime,
-        returnDate,
-        returnTime,
-        status: "Success"
-      };
+          // Create a new reservation object
+          const newReservation = {
+            name,
+            equipmentType,
+            specificEquipment,
+            checkoutDate,
+            checkoutTime,
+            returnDate,
+            returnTime,
+            status: "Success"
+          };
 
-      // Add to Firestore
-      try {
-          await addDoc(collection(db, "reservations"), newReservation);
-          // Confirm the reservation
-          document.getElementById("confirmation").innerText = "Reservation successful!";
-          form.reset();
-      } catch (error) {
-          document.getElementById("error-message").innerText = "Error submitting reservation: " + error.message;
-      }
-    });
+          // Add to Firestore
+          try {
+              await addDoc(collection(db, "reservations"), newReservation);
+              // Confirm the reservation
+              document.getElementById("confirmation").innerText = "Reservation successful!";
+              form.reset();
+          } catch (error) {
+              document.getElementById("error-message").innerText = "Error submitting reservation: " + error.message;
+          }
+        });
 
-    const equipmentTypeSelect = document.getElementById("equipment-type");
-    const specificEquipmentSelect = document.getElementById("specific-equipment");
+        const equipmentTypeSelect = document.getElementById("equipment-type");
+        const specificEquipmentSelect = document.getElementById("specific-equipment");
 
-    // Fetch Equipment Types
-    async function loadEquipmentTypes() {
-      const equipmentRef = collection(db, "equip");
-      const snapshot = await getDocs(equipmentRef);
-      equipmentTypeSelect.innerHTML = '<option value="">Select Equipment Type</option>';
+        // Fetch Equipment Types
+        async function loadEquipmentTypes() {
+          const equipmentRef = collection(db, "equip");
+          const snapshot = await getDocs(equipmentRef);
+          equipmentTypeSelect.innerHTML = '<option value="">Select Equipment Type</option>';
 
-      snapshot.forEach(doc => {
-        const option = document.createElement("option");
-        option.value = doc.id;
-        option.textContent = doc.id;
-        equipmentTypeSelect.appendChild(option);
-      });
-    }
+          snapshot.forEach(doc => {
+            const option = document.createElement("option");
+            option.value = doc.id;
+            option.textContent = doc.id;
+            equipmentTypeSelect.appendChild(option);
+          });
+        }
 
-    // Fetch Specific Equipment Based on Type
-    async function loadSpecificEquipment(type) {
-      if (!type) {
+        // Fetch Specific Equipment Based on Type
+        async function loadSpecificEquipment(type) {
+          if (!type) {
+              specificEquipmentSelect.innerHTML = '<option value="">Select Specific Equipment</option>';
+              return;
+          }
+
+          const specificRef = collection(db, `equip/${type}/items`);
+          const snapshot = await getDocs(specificRef);
           specificEquipmentSelect.innerHTML = '<option value="">Select Specific Equipment</option>';
-          return;
-      }
 
-      const specificRef = collection(db, `equip/${type}/items`);
-      const snapshot = await getDocs(specificRef);
-      specificEquipmentSelect.innerHTML = '<option value="">Select Specific Equipment</option>';
+          snapshot.forEach(doc => {
+              const data = doc.data();
+              const option = document.createElement("option");
+              option.value = doc.id;
+              option.textContent = data.specificEquipment;
+              option.disabled = data.available === false; // Disable if not available
+              specificEquipmentSelect.appendChild(option);
+          });
+        }
 
-      snapshot.forEach(doc => {
-          const data = doc.data();
-          const option = document.createElement("option");
-          option.value = doc.id;
-          option.textContent = data.specificEquipment;
-          option.disabled = data.available === false; // Disable if not available
-          specificEquipmentSelect.appendChild(option);
-      });
-    }
+        // Event listener for equipment type change
+        equipmentTypeSelect.addEventListener("change", (event) => {
+          loadSpecificEquipment(event.target.value);
+        });
 
-    // Event listener for equipment type change
-    equipmentTypeSelect.addEventListener("change", (event) => {
-      loadSpecificEquipment(event.target.value);
-    });
-
-    // Load equipment types on page load
-    loadEquipmentTypes();
-</script>
+        // Load equipment types on page load
+        loadEquipmentTypes();
+    </script>
+</body>
+</html>
