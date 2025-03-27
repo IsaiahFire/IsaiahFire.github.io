@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipment Checkout</title>
+    <link rel="stylesheet" href="https://unpkg.com/mvp.css"> 
+</head>
+<body>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
+        import { getFirestore , collection, getDocs, doc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
+      
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyAyqdhzkEhW2HKJ6vJIZUoFUMDpyVt2Q5I",
+          authDomain: "equipment-checkout-79dc3.firebaseapp.com",
+          projectId: "equipment-checkout-79dc3",
+          storageBucket: "equipment-checkout-79dc3.firebasestorage.app",
+          messagingSenderId: "12217227136",
+          appId: "1:12217227136:web:e00683477560c061765365"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        console.log("Firebase initialized!");
+
+        // Form structure for the user to enter their reservation search details
+        document.body.innerHTML += `
+          <h2>&nbsp&nbsp&nbsp&nbsp&nbspEquipment Reservation Search</h2>
+          <form id="search-form">
+            <label for="from-date">From:</label>
+            <input type="date" id="from-date" required><br>
+
+            <label for="to-date">To:</label>
+            <input type="date" id="to-date" required><br>
+            
+            <label for="equipment-type">Equipment Type:</label>
+            <select id="equipment-type" required>
+              <option value="">Select Equipment Type</option>
+              <!-- Options will be populated from Firestore -->
+            </select><br>
+            
+            <label for="specific-equipment">Specific Equipment:</label>
+            <select id="specific-equipment" required>
+              <option value="">Select Specific Equipment</option>
+              <!-- Specific equipment will be dynamically populated here -->
+            </select><br>
+            
+            <button type="submit">Search Reservations</button>
+          </form>
+          <div id="results"></div>
+          <div id="error-message" style="color: red;"></div>
+        `;
+
+        const form = document.getElementById("search-form");
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          document.getElementById("error-message").innerText = ""; // Clear previous error message
+          document.getElementById("results").innerHTML = ""; // Clear previous results
+
+          const fromDate = document.getElementById("from-date").value;
+          const toDate = document.getElementById("to-date").value;
+          const equipmentType = document.getElementById("equipment-type").value;
+          const specificEquipment = document.getElementById("specific-equipment").value;
+
+          // Validate date range
+          const fromDateTime = new Date(fromDate);
+          const toDateTime = new Date(toDate);
+          if (toDateTime <= fromDateTime) {
+              document.getElementById("error-message").innerText = "To date must be after from date.";
+              return;
+          }
+
+          // Fetch reservations within the selected date range
+          const reservationQuery = collection(db, "reservations");
+          const reservationSnapshot = await getDocs(reservationQuery);
+          let results = [];
+
+          reservationSnapshot.forEach(doc => {
+              const data = doc.data();
+              const checkoutDateTime = new Date(`${data.checkoutDate}T${data.checkoutTime}`);
+              const returnDateTime = new Date(`${data.returnDate}T${data.returnTime}`);
+              
+              if (data.equipmentType === equipmentType && 
+                  data.specificEquipment === specificEquipment && 
+                  returnDateTime >= fromDateTime && 
+                  checkoutDateTime <= toDateTime) {
+                  results.push(data);
+              }
+          });
+
+          function formatTime(dateStr, timeStr) {
+              const date = new Date(`${dateStr}T${timeStr}`);
+              let hours = date.getHours();
+              let minutes = date.getMinutes();
+              const ampm = hours >= 12 ? 'PM' : 'AM';
+              hours = hours % 12 || 12; // Convert 0 to 12
+              minutes = minutes.toString().padStart(2, '0');
+              return `${hours}:${minutes} ${ampm}`;
+          }
+
+          // Display results
+          if (results.length > 0) {
+              results.forEach(reservation => {
+                  const reservationDiv = document.createElement("div");
+                  reservationDiv.innerHTML = `<strong>Reservation:</strong> ${reservation.name}, ${reservation.specificEquipment}, from ${reservation.checkoutDate} ${formatTime(reservation.checkoutDate, reservation.checkoutTime)} to ${reservation.returnDate} ${formatTime(reservation.returnDate, reservation.returnTime)}`;
+                  document.getElementById("results").appendChild(reservationDiv);
+              });
+          } else {
+              document.getElementById("results").innerText = "No reservations found for the selected criteria.";
+          }
+        });
+
+        const equipmentTypeSelect = document.getElementById("equipment-type");
+        const specificEquipmentSelect = document.getElementById("specific-equipment");
+
+        // Fetch Equipment Types
+        async function loadEquipmentTypes() {
+          const equipmentRef = collection(db, "equip");
+          const snapshot = await getDocs(equipmentRef);
+          equipmentTypeSelect.innerHTML = '<option value="">Select Equipment Type</option>';
+
+          snapshot.forEach(doc => {
+            const option = document.createElement("option");
+            option.value = doc.id;
+            option.textContent = doc.id;
+            equipmentTypeSelect.appendChild(option);
+          });
+        }
+
+        // Fetch Specific Equipment Based on Type
+        async function loadSpecificEquipment(type) {
+          if (!type) {
+              specificEquipmentSelect.innerHTML = '<option value="">Select Specific Equipment</option>';
+              return;
+          }
+
+          const specificRef = collection(db, `equip/${type}/items`);
+          const snapshot = await getDocs(specificRef);
+          specificEquipmentSelect.innerHTML = '<option value="">Select Specific Equipment</option>';
+
+          snapshot.forEach(doc => {
+              const data = doc.data();
+              const option = document.createElement("option");
+              option.value = doc.id;
+              option.textContent = data.specificEquipment;
+              option.disabled = data.available === false; // Disable if not available
+              specificEquipmentSelect.appendChild(option);
+          });
+        }
+
+        // Event listener for equipment type change
+        equipmentTypeSelect.addEventListener("change", (event) => {
+          loadSpecificEquipment(event.target.value);
+        });
+
+        // Load equipment types on page load
+        loadEquipmentTypes();
+    </script>
+</body>
+</html>
