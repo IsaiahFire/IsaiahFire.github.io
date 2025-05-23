@@ -10,8 +10,8 @@ form.addEventListener('submit', (e) => {
     const email = document.getElementById('email').value.trim();
     const message = document.getElementById('message').value.trim();
 
-    // Validation: Prevent empty messages
-    if (!message) {
+    // Validation: Prevent empty or whitespace-only messages
+    if (message.trim().length === 0) {
         alert("Please enter a message before submitting.");
         return;
     }
