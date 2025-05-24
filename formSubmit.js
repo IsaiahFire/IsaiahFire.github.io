@@ -28,7 +28,7 @@ form.addEventListener('submit', (e) => {
 
     console.log("Submitting form data:", formData);
 
-    fetch('https://script.google.com/macros/s/AKfycbyb69C4afPa7584C6Clko3sMllqNIVJ6TPavNmLRqoapwO_T_pDhgipaiWCKFzLS3qzBw/exec', {
+    fetch('https://script.google.com/macros/s/AKfycbxHZBLjkCLgN8WgTQsqvdprSSdCGA1odICbp-mxmifZ63PNxcIwdjzf8fMFTikeKxINZg/exec', {
         method: 'POST',
         mode: 'no-cors', // Necessary for Google Apps Script
         headers: { 'Content-Type': 'application/json' },
