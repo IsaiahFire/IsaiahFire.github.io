@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Content begins! -->
+  <title>Cat Survey</title>
+  <h1 id="title">Cat Survey </h1>
+  <p id="description">Welcome to this all-inclusive, comprehensive masterpiece of a cat survey.</p> 
+</head>
+<!-- Form begin, disclaimer -->
+<body>
+<form id="survey-form">
+  <fieldset>
+    <legend> Disclaimers / Threats </legend>
+    <p><em>Beware: any dog lovers attempting to submit this form will have their internet connection physically obliterated.</em></p>
+    <label for="conditions"><input type="checkbox" id="conditions" name="conditions" value="conditions" required> I understand what is at stake</input></label>
+    <label for="conditions2"><input type="checkbox" id="conditions2" name="conditions2" value="conditions2" required> I agree to the terms of service and waive my right to read the terms of serivce</input></label>
+  </fieldset>
+<!-- Info Section -->
+  <fieldset> <legend>Personal Information for the Data Brokers</legend>
+<!-- Name collection -->
+    
+<label id="name-label" for="name">Name: </label>
+  <input id="name" name="name" type="text" placeholder="Perry the Platypus" required></input> 
+<!-- Email collection -->
+    
+<label id="email-label" for="email">Email: </label><input id="email" name="email" type="email" placeholder="Perry@fanmail.com" required></input>
+<!-- Number?? -->
+<label id="number-label" for="number">Favorite Number: </label><input id="number" name="fav_umber" type="number" placeholder="Such as 1, a number" step="any" min="-999999999" max="999999999" required></input>
+  </fieldset>
+  <!-- Finally, onto cats! -->
+  <fieldset>
+    <legend> Now about the cats</legend>
+    <label for="catname">Your cat's name: <input type="text" id="catname" name="catname"></label>
+  <!-- Dropdown 1 -->
+    <label for="dropdown">What kind of cat do you have? <select type="dropdown" id="dropdown" required>
+      <option value="indoor">Indoor</option>
+      <option value="outdoor">Outdoor</option>
+      <option value="inout">Indoor/Outdoor</option>
+      <option value="outin">Outdoor/Indoor</option>
+      <option value="atc">All-Terrain</option>
+    </select></label>
+    <!-- And onto the next -->
+    <label for="dropdown2">Is your cat the most amazing thing to ever exist? <select type="dropdown" id="dropdown2" required>
+      <option value="yes1">Yes</option>
+      <option value="yes2">Yes</option>
+      <option value="yes3">Yes</option>
+      <option value="yes4">Yes</option>
+      <option value="kevin">Kevin</option>
+    </select></label>
+    <!-- Agreement pt.2 -->
+    <hr class="solid">
+    <label for="consent">Does your cat consent to us sharing your personal information with our "partners"* to deliver "agregate"¹ and "non-identifiable"² experiences** as described in section 4.1(a) of our terms and service agreement?</label>
+    <input id="consent" type="radio" name="consent" value="yes" checked /> Yes</label>
+    <input id="Maybeconsent" type="radio" value="maybe" name="consent" /> Still need to check, let's say yes for now</label>
+    <hr class="solid">
+<!-- Final bits -->
+<label for="catpic">A picture of your cat (optional): </label>
+<input type="file" id="catpic" name="catpic">
+<!---->
+<label for="talk">Something about your cat: </label><textarea  id="talk" name="talk"></textarea>
+  </fieldset>
+  <fieldset>
+    <legend>Here's Where the "Submit" Button Goes</legend>
+  <input id="submit" type="submit" value="Submit" />
+  </fieldset>
+</form>
+</body>
+</html>

@@ -1,0 +1,46 @@
+
+body {
+  font-family: Alice;
+  font-size: 16px;
+  text-align: center;
+  background: rgba(0, 0, 255,20%);
+}
+fieldset {
+  width: 90%;
+  max-width: 600px;
+  margin: 10px auto;
+  background: rgb(243, 243, 243);
+  box-shadow: 0 0 20px 0 rgba(255, 255, 255, 0.5);
+}
+legend {
+  background: rgba(200,230,255,100%);
+  padding: 10px;
+
+}
+label {
+  display: block;
+  margin: 0.5rem 0;
+}
+
+textarea {
+  width: 90%;
+  height: 3.5rem;
+}
+
+/* Solid border */
+hr.solid {
+  border-top: 3px solid rgba(200,230,255,100%);
+  margin: 25px 0;
+}
+
+input[type="submit"] {
+  display: block;
+  width: 90%;
+  margin: 1em auto;
+  height: 2em;
+  font-size: 1.1rem;
+  background-color: rgba(200,230,255,100%);
+  border-color: rgba(255, 255, 255, 0.5);;
+  min-width: 300px;
+  box-shadow: 10px 10px 20px 0 rgba(0, 100, 255, 0.2);
+}
