@@ -2,6 +2,7 @@ const form = document.getElementById('contact-form'); // Ensure your form has th
 const button = document.getElementById("submitButton");
 const buttonText = button.querySelector(".button-text");
 const loadingIcon = button.querySelector(".loading-icon");
+const turnstileResponse = document.querySelector('[name="cf-turnstile-response"]').value;
 
 form.addEventListener('submit', (e) => {
     e.preventDefault(); // Prevent the default form submission behavior
@@ -23,12 +24,13 @@ form.addEventListener('submit', (e) => {
     const formData = {
         name: name,
         email: email,
-        message: message
+        message: message,
+        turnstileToken: turnstileResponse
     };
 
     console.log("Submitting form data:", formData);
 
-    fetch('https://script.google.com/macros/s/AKfycbxHZBLjkCLgN8WgTQsqvdprSSdCGA1odICbp-mxmifZ63PNxcIwdjzf8fMFTikeKxINZg/exec', {
+    fetch('https://script.google.com/macros/s/AKfycbxKm-1RpM-H_0KqZB9RICFlaUEqjBWQVpo3yTtiiJ-LaXrzEmQT7mEisOedLunJ8AD8QA/exec', {
         method: 'POST',
         mode: 'no-cors', // Necessary for Google Apps Script
         headers: { 'Content-Type': 'application/json' },
