@@ -1,0 +1,102 @@
+import React from "react";
+import { motion } from "framer-motion";
+import { Mail, MapPin, Send } from "lucide-react";
+
+export default function ContactFooter() {
+  return (
+    <footer className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-purple-900 to-indigo-900 text-white">
+      {/* Animated background blobs */}
+      <motion.div
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.3, 0.5, 0.3]
+        }}
+        transition={{ duration: 10, repeat: Infinity }}
+        className="absolute top-0 left-0 w-96 h-96 bg-purple-500 rounded-full blur-3xl"
+      />
+      <motion.div
+        animate={{
+          scale: [1, 1.3, 1],
+          opacity: [0.3, 0.5, 0.3]
+        }}
+        transition={{ duration: 12, repeat: Infinity }}
+        className="absolute bottom-0 right-0 w-96 h-96 bg-orange-500 rounded-full blur-3xl"
+      />
+
+      <div className="max-w-7xl mx-auto px-4 py-20 relative z-10">
+        {/* CTA Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6">
+            Let's Create
+            <br />
+            <span className="bg-gradient-to-r from-purple-400 to-orange-400 bg-clip-text text-transparent">
+              Something Amazing
+            </span>
+          </h2>
+          <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
+            Have a project in mind? Whether it's photography, videography, or engineering - 
+            I'd love to hear from you.
+          </p>
+
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-purple-500 to-orange-500 rounded-full font-bold text-lg shadow-2xl hover:shadow-purple-500/50 transition-all duration-300"
+          >
+            <Mail className="w-6 h-6" />
+            Send Me a Message
+            <Send className="w-5 h-5" />
+          </motion.button>
+        </motion.div>
+
+        {/* Footer Info */}
+        <div className="grid md:grid-cols-3 gap-8 pt-12 border-t border-white/10">
+          <div>
+            <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-orange-400 bg-clip-text text-transparent">
+              Portfolio
+            </h3>
+            <p className="text-gray-400">
+              Multi-disciplinary creative bringing ideas to life through visual storytelling and technology.
+            </p>
+          </div>
+
+          <div>
+            <h4 className="font-semibold mb-4 text-lg">Quick Links</h4>
+            <ul className="space-y-2 text-gray-400">
+              <li><a href="#" className="hover:text-white transition-colors">Photography</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Videography</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Engineering</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">About</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-semibold mb-4 text-lg">Get in Touch</h4>
+            <div className="space-y-3 text-gray-400">
+              <div className="flex items-center gap-3">
+                <Mail className="w-5 h-5" />
+                <span>hello@example.com</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <MapPin className="w-5 h-5" />
+                <span>Your City, Country</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Copyright */}
+        <div className="mt-12 pt-8 border-t border-white/10 text-center text-gray-400">
+          <p>© 2024 [Your Name]. All rights reserved. Crafted with passion & creativity.</p>
+        </div>
+      </div>
+    </footer>
+  );
+}
