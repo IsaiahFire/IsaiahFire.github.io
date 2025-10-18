@@ -1,0 +1,18 @@
+import React from "react";
+import Hero from "../components/portfolio/Hero";
+import PortfolioPreview from "../components/portfolio/PortfolioPreview";
+import EngineeringSection from "../components/portfolio/EngineeringSection";
+import AboutSection from "../components/portfolio/AboutSection";
+import ContactFooter from "../components/portfolio/ContactFooter";
+
+export default function Home() {
+  return (
+    <div className="overflow-hidden">
+      <Hero />
+      <PortfolioPreview />
+      <EngineeringSection />
+      <AboutSection />
+      <ContactFooter />
+    </div>
+  );
+}
