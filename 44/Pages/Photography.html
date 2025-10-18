@@ -1,0 +1,238 @@
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Camera, X, ChevronLeft, ChevronRight } from "lucide-react";
+
+export default function Photography() {
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("all");
+
+  const categories = ["all", "portraits", "landscapes", "urban", "events"];
+
+  const photos = [
+    {
+      url: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&h=600&fit=crop",
+      category: "portraits",
+      title: "Golden Hour Portrait"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
+      category: "landscapes",
+      title: "Mountain Vista"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&h=600&fit=crop",
+      category: "landscapes",
+      title: "Coastal Sunset"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800&h=600&fit=crop",
+      category: "urban",
+      title: "City Lights"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=800&h=600&fit=crop",
+      category: "urban",
+      title: "Street Architecture"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800&h=600&fit=crop",
+      category: "events",
+      title: "Live Performance"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&h=600&fit=crop",
+      category: "portraits",
+      title: "Natural Light"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&h=600&fit=crop",
+      category: "landscapes",
+      title: "Misty Morning"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=800&h=600&fit=crop",
+      category: "urban",
+      title: "Urban Geometry"
+    }
+  ];
+
+  const filteredPhotos = selectedCategory === "all" 
+    ? photos 
+    : photos.filter(photo => photo.category === selectedCategory);
+
+  const handleImageClick = (index) => {
+    setSelectedImage(index);
+  };
+
+  const handleNext = () => {
+    setSelectedImage((prev) => (prev + 1) % filteredPhotos.length);
+  };
+
+  const handlePrev = () => {
+    setSelectedImage((prev) => (prev - 1 + filteredPhotos.length) % filteredPhotos.length);
+  };
+
+  return (
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <section className="relative py-24 px-4 overflow-hidden">
+        <motion.div
+          animate={{
+            scale: [1, 1.2, 1],
+            x: [0, 30, 0],
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full blur-3xl opacity-20"
+        />
+        
+        <div className="max-w-7xl mx-auto relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center"
+          >
+            <div className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-purple-100 to-pink-100 rounded-full mb-6">
+              <Camera className="w-5 h-5 text-purple-600" />
+              <span className="font-medium text-purple-600">Photography Portfolio</span>
+            </div>
+            
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6">
+              <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 bg-clip-text text-transparent">
+                Capturing Moments
+              </span>
+            </h1>
+            
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+              Every photograph tells a story. Here's a collection of moments frozen in time, 
+              emotions captured through the lens.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Category Filter */}
+      <section className="px-4 pb-12">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-wrap justify-center gap-3">
+            {categories.map((category) => (
+              <motion.button
+                key={category}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
+                  selectedCategory === category
+                    ? "bg-gradient-to-r from-purple-600 to-orange-500 text-white shadow-lg"
+                    : "bg-white text-gray-700 hover:bg-purple-50 border border-gray-200"
+                }`}
+              >
+                {category.charAt(0).toUpperCase() + category.slice(1)}
+              </motion.button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Photo Grid */}
+      <section className="px-4 pb-20">
+        <div className="max-w-7xl mx-auto">
+          <motion.div 
+            layout
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            <AnimatePresence mode="popLayout">
+              {filteredPhotos.map((photo, index) => (
+                <motion.div
+                  key={photo.url}
+                  layout
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.4 }}
+                  whileHover={{ y: -10 }}
+                  onClick={() => handleImageClick(index)}
+                  className="group cursor-pointer"
+                >
+                  <div className="relative overflow-hidden rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 aspect-[4/3]">
+                    <img
+                      src={photo.url}
+                      alt={photo.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute bottom-0 left-0 right-0 p-6">
+                        <h3 className="text-white font-bold text-xl">{photo.title}</h3>
+                        <span className="inline-block mt-2 px-3 py-1 bg-white/20 backdrop-blur-sm text-white text-xs rounded-full">
+                          {photo.category}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Lightbox Modal */}
+      <AnimatePresence>
+        {selectedImage !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedImage(null)}
+            className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4"
+          >
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedImage(null);
+              }}
+              className="absolute top-6 right-6 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+            >
+              <X className="w-6 h-6 text-white" />
+            </button>
+
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handlePrev();
+              }}
+              className="absolute left-6 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+            >
+              <ChevronLeft className="w-6 h-6 text-white" />
+            </button>
+
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleNext();
+              }}
+              className="absolute right-6 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+            >
+              <ChevronRight className="w-6 h-6 text-white" />
+            </button>
+
+            <motion.img
+              key={selectedImage}
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              src={filteredPhotos[selectedImage].url}
+              alt={filteredPhotos[selectedImage].title}
+              className="max-w-full max-h-[90vh] object-contain rounded-2xl"
+              onClick={(e) => e.stopPropagation()}
+            />
+
+            <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-white/10 backdrop-blur-md px-6 py-3 rounded-full">
+              <p className="text-white font-semibold">{filteredPhotos[selectedImage].title}</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
