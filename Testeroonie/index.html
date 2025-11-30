@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/Testeroonie/styles.css" />
+    <title>ImageGrid 10x10</title>
+</head>
+<body>
+    <div class="controls">
+        <button id="zoomIn">Zoom In (+)</button>
+        <button id="zoomOut">Zoom Out (-)</button>
+        <button id="resetView">Reset View</button>
+        <div class="zoom-info">
+            <span id="zoomLevel">100%</span> | Pan with click & drag
+        </div>
+    </div>
+
+    <div class="canvas-container" id="canvasContainer">
+        <div class="grid-wrapper" id="gridWrapper">
+            <div class="grid" id="grid"></div>
+        </div>
+    </div>
+
+    <script>
+        const grid = document.getElementById('grid');
+        const gridWrapper = document.getElementById('gridWrapper');
+        const canvasContainer = document.getElementById('canvasContainer');
+        const zoomInBtn = document.getElementById('zoomIn');
+        const zoomOutBtn = document.getElementById('zoomOut');
+        const resetViewBtn = document.getElementById('resetView');
+        const zoomLevelDisplay = document.getElementById('zoomLevel');
+
+        let scale = 1;
+        let translateX = 0;
+        let translateY = 0;
+        let isDragging = false;
+        let startX = 0;
+        let startY = 0;
+
+        // Create 10x10 grid
+        for (let i = 0; i < 100; i++) {
+            const square = document.createElement('button');
+            square.className = 'grid-square';
+            square.addEventListener('click', (e) => {
+                e.stopPropagation();
+                square.classList.toggle('filled');
+            });
+            grid.appendChild(square);
+        }
+
+        function updateTransform() {
+            gridWrapper.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+            zoomLevelDisplay.textContent = `${Math.round(scale * 100)}%`;
+        }
+
+        function centerGrid() {
+            const containerRect = canvasContainer.getBoundingClientRect();
+            const gridRect = grid.getBoundingClientRect();
+            translateX = (containerRect.width - gridRect.width * scale) / 2;
+            translateY = (containerRect.height - gridRect.height * scale) / 2;
+            updateTransform();
+        }
+
+        zoomInBtn.addEventListener('click', () => {
+            const containerRect = canvasContainer.getBoundingClientRect();
+            const centerX = containerRect.width / 2;
+            const centerY = containerRect.height / 2;
+            
+            const oldScale = scale;
+            scale = Math.min(scale * 1.2, 5);
+            
+            translateX = centerX - (centerX - translateX) * (scale / oldScale);
+            translateY = centerY - (centerY - translateY) * (scale / oldScale);
+            
+            updateTransform();
+        });
+
+        zoomOutBtn.addEventListener('click', () => {
+            const containerRect = canvasContainer.getBoundingClientRect();
+            const centerX = containerRect.width / 2;
+            const centerY = containerRect.height / 2;
+            
+            const oldScale = scale;
+            scale = Math.max(scale / 1.2, 0.2);
+            
+            translateX = centerX - (centerX - translateX) * (scale / oldScale);
+            translateY = centerY - (centerY - translateY) * (scale / oldScale);
+            
+            updateTransform();
+        });
+
+        resetViewBtn.addEventListener('click', () => {
+            scale = 1;
+            centerGrid();
+        });
+
+        // Pan functionality
+        canvasContainer.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.clientX - translateX;
+            startY = e.clientY - translateY;
+            canvasContainer.classList.add('grabbing');
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            translateX = e.clientX - startX;
+            translateY = e.clientY - startY;
+            updateTransform();
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            canvasContainer.classList.remove('grabbing');
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '+' || e.key === '=') {
+                zoomInBtn.click();
+            } else if (e.key === '-') {
+                zoomOutBtn.click();
+            } else if (e.key === '0') {
+                resetViewBtn.click();
+            }
+        });
+
+        // Mouse wheel zoom
+        canvasContainer.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            
+            const rect = canvasContainer.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            
+            const oldScale = scale;
+            
+            if (e.deltaY < 0) {
+                scale = Math.min(scale * 1.1, 5);
+            } else {
+                scale = Math.max(scale / 1.1, 0.2);
+            }
+            
+            translateX = mouseX - (mouseX - translateX) * (scale / oldScale);
+            translateY = mouseY - (mouseY - translateY) * (scale / oldScale);
+            
+            updateTransform();
+        });
+
+        // Initialize centered view
+        centerGrid();
+    </script>
+</body>
+</html>

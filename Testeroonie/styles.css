@@ -1,0 +1,99 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    background: #1a1a1a;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.controls {
+    background: #2a2a2a;
+    padding: 15px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    z-index: 10;
+}
+
+.controls button {
+    background: #4a4a4a;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.2s;
+}
+
+.controls button:hover {
+    background: #5a5a5a;
+}
+
+.controls button:active {
+    background: #3a3a3a;
+}
+
+.zoom-info {
+    color: #aaa;
+    margin-left: auto;
+    font-size: 14px;
+}
+
+.canvas-container {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    cursor: grab;
+}
+
+.canvas-container.grabbing {
+    cursor: grabbing;
+}
+
+.grid-wrapper {
+    position: absolute;
+    transform-origin: 0 0;
+    transition: transform 0.1s ease-out;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(10, 100px);
+    grid-template-rows: repeat(10, 100px);
+    gap: 2px;
+    background: #333;
+    padding: 2px;
+}
+
+.grid-square {
+    background: #4a4a4a;
+    border: 1px solid #666;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+
+.grid-square:hover {
+    background: #5a5a5a;
+    border-color: #888;
+    transform: scale(1.05);
+    z-index: 1;
+}
+
+.grid-square:active {
+    transform: scale(0.95);
+}
+
+.grid-square.filled {
+    background: #6a9fb5;
+}
