@@ -3,22 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Collage Grid</title>
     <link rel="stylesheet" href="/Testeroonie/styles.css" />
-    <title>ImageGrid 10x10</title>
 </head>
 <body>
-    <div class="controls">
-        <button id="zoomIn">Zoom In (+)</button>
-        <button id="zoomOut">Zoom Out (-)</button>
-        <button id="resetView">Reset View</button>
-        <div class="zoom-info">
-            <span id="zoomLevel">100%</span> | Pan with click & drag
-        </div>
-    </div>
-
     <div class="canvas-container" id="canvasContainer">
         <div class="grid-wrapper" id="gridWrapper">
             <div class="grid" id="grid"></div>
+        </div>
+    </div>
+
+    <div class="upload-modal" id="uploadModal">
+        <div class="upload-content">
+            <h2>Upload Image</h2>
+            <div class="upload-area" id="uploadArea">
+                <p>Click to select an image</p>
+            </div>
+            <input type="file" id="fileInput" accept="image/*">
+            <div class="modal-buttons">
+                <button class="cancel" id="cancelBtn">Cancel</button>
+            </div>
         </div>
     </div>
 
@@ -26,10 +30,12 @@
         const grid = document.getElementById('grid');
         const gridWrapper = document.getElementById('gridWrapper');
         const canvasContainer = document.getElementById('canvasContainer');
-        const zoomInBtn = document.getElementById('zoomIn');
-        const zoomOutBtn = document.getElementById('zoomOut');
-        const resetViewBtn = document.getElementById('resetView');
-        const zoomLevelDisplay = document.getElementById('zoomLevel');
+        const uploadModal = document.getElementById('uploadModal');
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const cancelBtn = document.getElementById('cancelBtn');
+
+        let currentSquare = null;
 
         let scale = 1;
         let translateX = 0;
@@ -44,14 +50,51 @@
             square.className = 'grid-square';
             square.addEventListener('click', (e) => {
                 e.stopPropagation();
-                square.classList.toggle('filled');
+                currentSquare = square;
+                uploadModal.classList.add('active');
             });
             grid.appendChild(square);
         }
 
+        // Upload modal functionality
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file && currentSquare) {
+                // Here is where you'd send the file to your backend
+                // For now, we'll just show a preview
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    currentSquare.style.backgroundImage = `url(${event.target.result})`;
+                    currentSquare.style.backgroundSize = 'cover';
+                    currentSquare.style.backgroundPosition = 'center';
+                    currentSquare.classList.add('filled');
+                };
+                reader.readAsDataURL(file);
+                
+                uploadModal.classList.remove('active');
+                fileInput.value = '';
+            }
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            uploadModal.classList.remove('active');
+            fileInput.value = '';
+        });
+
+        // Close modal when clicking outside
+        uploadModal.addEventListener('click', (e) => {
+            if (e.target === uploadModal) {
+                uploadModal.classList.remove('active');
+                fileInput.value = '';
+            }
+        });
+
         function updateTransform() {
             gridWrapper.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
-            zoomLevelDisplay.textContent = `${Math.round(scale * 100)}%`;
         }
 
         function centerGrid() {
@@ -62,37 +105,36 @@
             updateTransform();
         }
 
-        zoomInBtn.addEventListener('click', () => {
-            const containerRect = canvasContainer.getBoundingClientRect();
-            const centerX = containerRect.width / 2;
-            const centerY = containerRect.height / 2;
-            
-            const oldScale = scale;
-            scale = Math.min(scale * 1.2, 5);
-            
-            translateX = centerX - (centerX - translateX) * (scale / oldScale);
-            translateY = centerY - (centerY - translateY) * (scale / oldScale);
-            
-            updateTransform();
-        });
-
-        zoomOutBtn.addEventListener('click', () => {
-            const containerRect = canvasContainer.getBoundingClientRect();
-            const centerX = containerRect.width / 2;
-            const centerY = containerRect.height / 2;
-            
-            const oldScale = scale;
-            scale = Math.max(scale / 1.2, 0.2);
-            
-            translateX = centerX - (centerX - translateX) * (scale / oldScale);
-            translateY = centerY - (centerY - translateY) * (scale / oldScale);
-            
-            updateTransform();
-        });
-
-        resetViewBtn.addEventListener('click', () => {
-            scale = 1;
-            centerGrid();
+        // Zoom with keyboard
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '+' || e.key === '=') {
+                const containerRect = canvasContainer.getBoundingClientRect();
+                const centerX = containerRect.width / 2;
+                const centerY = containerRect.height / 2;
+                
+                const oldScale = scale;
+                scale = Math.min(scale * 1.2, 5);
+                
+                translateX = centerX - (centerX - translateX) * (scale / oldScale);
+                translateY = centerY - (centerY - translateY) * (scale / oldScale);
+                
+                updateTransform();
+            } else if (e.key === '-') {
+                const containerRect = canvasContainer.getBoundingClientRect();
+                const centerX = containerRect.width / 2;
+                const centerY = containerRect.height / 2;
+                
+                const oldScale = scale;
+                scale = Math.max(scale / 1.2, 0.2);
+                
+                translateX = centerX - (centerX - translateX) * (scale / oldScale);
+                translateY = centerY - (centerY - translateY) * (scale / oldScale);
+                
+                updateTransform();
+            } else if (e.key === '0') {
+                scale = 1;
+                centerGrid();
+            }
         });
 
         // Pan functionality
@@ -113,17 +155,6 @@
         document.addEventListener('mouseup', () => {
             isDragging = false;
             canvasContainer.classList.remove('grabbing');
-        });
-
-        // Keyboard shortcuts
-        document.addEventListener('keydown', (e) => {
-            if (e.key === '+' || e.key === '=') {
-                zoomInBtn.click();
-            } else if (e.key === '-') {
-                zoomOutBtn.click();
-            } else if (e.key === '0') {
-                resetViewBtn.click();
-            }
         });
 
         // Mouse wheel zoom
