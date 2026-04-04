@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scoreboard — Send a Message</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Variables ─────────────────────────────────────── */
+    :root {
+      --bg:        #0f0d0a;
+      --card:      #1c1812;
+      --border:    #3a2f22;
+      --gold:      #c9963a;
+      --gold-dim:  #7a5c20;
+      --cream:     #f0e0c0;
+      --cream-dim: #9a8870;
+      --red:       #c0392b;
+      --green:     #2e7d52;
+      --radius:    4px;
+    }
+
+    /* ── Reset / Base ───────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--bg);
+      /* Subtle noise texture */
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      color: var(--cream);
+      padding: 2rem 1rem;
+    }
+
+    /* ── Card ───────────────────────────────────────────── */
+    .card {
+      width: 100%;
+      max-width: 560px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 3rem 3.5rem 2.5rem;
+      position: relative;
+      box-shadow:
+        0 2px 4px rgba(0,0,0,.4),
+        0 8px 32px rgba(0,0,0,.6),
+        inset 0 1px 0 rgba(255,255,255,.03);
+    }
+
+    /* Top gold accent line */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+
+    /* ── Header ─────────────────────────────────────────── */
+    .header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .label-small {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 400;
+      color: var(--cream);
+      line-height: 1.2;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .subtitle {
+      margin-top: 0.8rem;
+      font-size: 0.82rem;
+      color: var(--cream-dim);
+      line-height: 1.6;
+    }
+
+    /* ── Divider ────────────────────────────────────────── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 0 0 2rem;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .divider-icon {
+      color: var(--gold-dim);
+      font-size: 0.8rem;
+    }
+
+    /* ── Textarea ───────────────────────────────────────── */
+    .field-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.5rem;
+    }
+    .field-label span {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--cream-dim);
+    }
+    #charCount {
+      font-size: 0.72rem;
+      color: var(--cream-dim);
+      transition: color 0.2s;
+    }
+    #charCount.warn  { color: #d4834a; }
+    #charCount.over  { color: var(--red); }
+
+    textarea {
+      width: 100%;
+      min-height: 130px;
+      resize: vertical;
+      background: rgba(255,255,255,.03);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--cream);
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      line-height: 1.65;
+      padding: 0.9rem 1rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    textarea::placeholder { color: #50412e; font-style: italic; }
+    textarea:focus {
+      border-color: var(--gold-dim);
+      box-shadow: 0 0 0 2px rgba(201,150,58,.1);
+    }
+
+    /* ── Buttons ────────────────────────────────────────── */
+    .actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.25rem;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: var(--radius);
+      font-family: 'Lato', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+    button:active { transform: translateY(1px); }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    #sendBtn {
+      flex: 1;
+      padding: 0.85rem 1.5rem;
+      background: var(--gold);
+      color: #0f0d0a;
+    }
+    #sendBtn:hover:not(:disabled) { opacity: 0.88; }
+
+    #clearBtn {
+      padding: 0.85rem 1.2rem;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--cream-dim);
+    }
+    #clearBtn:hover:not(:disabled) {
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    /* ── Status ─────────────────────────────────────────── */
+    #status {
+      margin-top: 1.1rem;
+      min-height: 1.4rem;
+      font-size: 0.82rem;
+      text-align: center;
+      letter-spacing: 0.04em;
+      color: var(--cream-dim);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    #status.show    { opacity: 1; }
+    #status.success { color: #5db07a; }
+    #status.error   { color: var(--red); }
+    #status.info    { color: var(--cream-dim); }
+
+    /* ── Footer ─────────────────────────────────────────── */
+    .footer {
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.72rem;
+      color: #50412e;
+      text-align: center;
+      line-height: 1.7;
+    }
+    .footer code {
+      font-family: 'Courier New', monospace;
+      background: rgba(255,255,255,.04);
+      padding: 0.1em 0.35em;
+      border-radius: 2px;
+      color: var(--gold-dim);
+      font-size: 0.95em;
+    }
+
+    /* ── Animations ─────────────────────────────────────── */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .card { animation: fadeIn 0.5s ease both; }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <div class="header">
+      <p class="label-small">Scoreboard Control</p>
+      <h1>Send a <em>message</em></h1>
+      <p class="subtitle">
+        The last LED will glow red when a new message is waiting.
+        She'll see it the next time she looks at the scoreboard.
+      </p>
+    </div>
+
+    <div class="divider">
+      <span class="divider-icon">✦</span>
+    </div>
+
+    <div class="field-label">
+      <span>Your message</span>
+      <span id="charCount">0 / 150</span>
+    </div>
+
+    <textarea
+      id="messageInput"
+      maxlength="150"
+      placeholder="Write something sweet..."
+    ></textarea>
+
+    <div class="actions">
+      <button id="sendBtn">Send Message</button>
+      <button id="clearBtn" title="Clear any pending message from the display">Clear</button>
+    </div>
+
+    <div id="status"></div>
+
+    <div class="footer">
+      Messages are delivered via Google Apps Script.<br />
+      The board checks every 5 minutes — she'll see the red light soon.<br /><br />
+      To update the script URL: edit <code>SCRIPT_URL</code> at the top of this file.
+    </div>
+  </div>
+
+  <script>
+    // ──────────────────────────────────────────────────────────
+    // CONFIG — paste your Apps Script URL here
+    // ──────────────────────────────────────────────────────────
+    const SCRIPT_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
+    // ──────────────────────────────────────────────────────────
+
+    const MAX_CHARS = 150;
+
+    const textarea  = document.getElementById("messageInput");
+    const charCount = document.getElementById("charCount");
+    const sendBtn   = document.getElementById("sendBtn");
+    const clearBtn  = document.getElementById("clearBtn");
+    const status    = document.getElementById("status");
+
+    // Character counter
+    textarea.addEventListener("input", () => {
+      const n = textarea.value.length;
+      charCount.textContent = `${n} / ${MAX_CHARS}`;
+      charCount.classList.toggle("warn", n >= 100 && n < MAX_CHARS);
+      charCount.classList.toggle("over", n >= MAX_CHARS);
+    });
+
+    // Show status message
+    function showStatus(msg, type = "info", duration = 4000) {
+      status.textContent = msg;
+      status.className = `show ${type}`;
+      if (duration) {
+        setTimeout(() => { status.className = ""; }, duration);
+      }
+    }
+
+    // Fire a GET request to Apps Script (no-cors so CORS doesn't block it)
+    // We can't read the response, so we assume success after the request goes out.
+    async function scriptGet(params) {
+      const url = SCRIPT_URL + "?" + new URLSearchParams(params).toString();
+      try {
+        await fetch(url, { mode: "no-cors" });
+        return true;
+      } catch (e) {
+        console.error("Request failed:", e);
+        return false;
+      }
+    }
+
+    // Send message
+    sendBtn.addEventListener("click", async () => {
+      const text = textarea.value.trim();
+      if (!text) {
+        showStatus("Write something first.", "info");
+        return;
+      }
+
+      sendBtn.disabled = true;
+      clearBtn.disabled = true;
+      showStatus("Sending…", "info", 0);
+
+      const ok = await scriptGet({ action: "setMessage", message: text });
+
+      sendBtn.disabled = false;
+      clearBtn.disabled = false;
+
+      if (ok) {
+        textarea.value = "";
+        charCount.textContent = `0 / ${MAX_CHARS}`;
+        charCount.className = "";
+        showStatus("✓ Message sent! The board will check in the next 5 minutes.", "success", 6000);
+      } else {
+        showStatus("Something went wrong — check your internet connection.", "error");
+      }
+    });
+
+    // Clear any pending message
+    clearBtn.addEventListener("click", async () => {
+      sendBtn.disabled = true;
+      clearBtn.disabled = true;
+      showStatus("Clearing…", "info", 0);
+
+      const ok = await scriptGet({ action: "clearMessage", messageId: "" });
+
+      sendBtn.disabled = false;
+      clearBtn.disabled = false;
+
+      if (ok) {
+        showStatus("✓ Message cleared.", "success", 4000);
+      } else {
+        showStatus("Something went wrong.", "error");
+      }
+    });
+  </script>
+</body>
+</html>
